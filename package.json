@@ -26,6 +26,9 @@
     "help": "nx help"
   },
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "tslib": "^2.0.0"
   },
