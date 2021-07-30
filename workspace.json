@@ -1,7 +1,83 @@
 {
   "version": 2,
-  "projects": {},
+  "projects": {
+    "my-app": {
+      "root": "packages/my-app",
+      "sourceRoot": "packages/my-app/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/my-app",
+            "main": "packages/my-app/src/main.ts",
+            "tsConfig": "packages/my-app/tsconfig.app.json",
+            "assets": ["packages/my-app/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "packages/my-app/src/environments/environment.ts",
+                  "with": "packages/my-app/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "my-app:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["packages/my-app/**/*.ts"]
+          }
+        }
+      }
+    },
+    "my-lib": {
+      "root": "packages/my-lib",
+      "sourceRoot": "packages/my-lib/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["packages/my-lib/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/my-lib"],
+          "options": {
+            "jestConfig": "packages/my-lib/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/my-lib",
+            "tsConfig": "packages/my-lib/tsconfig.lib.json",
+            "packageJson": "packages/my-lib/package.json",
+            "main": "packages/my-lib/src/index.ts",
+            "assets": ["packages/my-lib/*.md"]
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
-  }
+    "defaultCollection": "@nrwl/node"
+  },
+  "defaultProject": "my-app"
 }
